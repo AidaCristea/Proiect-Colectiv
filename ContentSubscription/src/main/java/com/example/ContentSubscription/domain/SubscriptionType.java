@@ -1,16 +1,17 @@
 package com.example.ContentSubscription.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name="subscriptionType")
 public class SubscriptionType {
@@ -22,12 +23,36 @@ public class SubscriptionType {
 
     private String type;
     private double price;
-    private String features;
+    private String description;
 
 
-    @OneToMany(mappedBy = "subscriptionType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    /*@OneToMany(mappedBy = "subscriptionType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Post> posts;*/
+
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "creator_id")
+    @ToString.Exclude
+    private Creator creator;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "fan_id")
+    private Fan fan;
+
+    @OneToMany(mappedBy = "subscriptionType")
     @JsonIgnore
     private List<Post> posts;
 
+    @Override
+    public String toString() {
+        return "SubscriptionType{" +
+                "subscriptionTypeId=" + subscriptionTypeId +
+                ", type='" + type + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                // Exclude other related entities from the toString representation
+                '}';
+    }
 
 }

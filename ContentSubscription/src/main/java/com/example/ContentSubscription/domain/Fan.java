@@ -3,6 +3,7 @@ package com.example.ContentSubscription.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name="fan")
 public class Fan {
@@ -22,8 +24,11 @@ public class Fan {
 
     private String preferences;
 
-    @ManyToMany(mappedBy = "fans", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fan")
+    private List<SubscriptionType> subscriptionTypes;
+
+    /*@ManyToMany(mappedBy = "fans", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Creator> subscribedCreators;
+    private List<Creator> subscribedCreators;*/
 
 }
