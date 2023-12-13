@@ -18,5 +18,9 @@ import java.util.List;
 public class CreatorDto {
     private Long creatorId;
     private String bio;
+    private Long priceUltimate;
+    private Long priceLite;
+    private Long pricePro;
+
     //private List<SubscriptionType> subscriptionTypes;
 }

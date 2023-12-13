@@ -7,7 +7,6 @@ import com.example.ContentSubscription.Exceptions.NoPostFoundException;
 import com.example.ContentSubscription.domain.Creator;
 import com.example.ContentSubscription.domain.Fan;
 import com.example.ContentSubscription.domain.Post;
-import com.example.ContentSubscription.domain.SubscriptionType;
 import com.example.ContentSubscription.repository.CreatorRepo;
 import com.example.ContentSubscription.repository.FanRepo;
 import com.example.ContentSubscription.repository.PostRepo;
@@ -41,22 +40,20 @@ public class FanService {
     }
 
     public void deleteFan(Long fanId) {
-        if(!fanRepo.existsById(fanId))
+        if (!fanRepo.existsById(fanId))
             throw new NoFanFoundException();
         fanRepo.deleteById(fanId);
     }
 
-    public List<Creator> seeCreators(Long fanId){
+    public List<Creator> seeCreators(Long fanId) {
         List<Creator> allCreatorsThatTheFanIsSubscribedTo = new ArrayList<>();
 
         List<Long> subscriptionTypeIdsForTheFan = subscriptionTypeRepo.findByFanId(fanId);
 
-        for(Long stId : subscriptionTypeIdsForTheFan)
-        {
+        for (Long stId : subscriptionTypeIdsForTheFan) {
             List<Long> creatorsIds = subscriptionTypeRepo.findCreatorBySubscriptionId(stId);
 
-            for(Long creatorId : creatorsIds)
-            {
+            for (Long creatorId : creatorsIds) {
                 allCreatorsThatTheFanIsSubscribedTo.add(creatorRepo.findById(creatorId).orElseThrow(NoCreatorFoundException::new));
             }
         }
@@ -68,7 +65,7 @@ public class FanService {
 
     }
 
-    public List<Post> seePosts(Long fanId){
+    public List<Post> seePosts(Long fanId) {
         //select post where subscriptionType in (select subscription type where idFan = fanId)
 
         List<Post> allPostsThatTheFanCanSee = new ArrayList<>();
@@ -78,10 +75,9 @@ public class FanService {
         List<Long> subscriptionTypeIdsForTheFan = subscriptionTypeRepo.findByFanId(fanId);
 
 
-        for(Long stId : subscriptionTypeIdsForTheFan){
+        for (Long stId : subscriptionTypeIdsForTheFan) {
             List<Long> postsIds = postRepo.findBySubscriptionTypeId(stId);
-            for(Long postId : postsIds)
-            {
+            for (Long postId : postsIds) {
                 allPostsThatTheFanCanSee.add(postRepo.findById(postId).orElseThrow(NoPostFoundException::new));
             }
 
@@ -89,8 +85,6 @@ public class FanService {
         }
         return allPostsThatTheFanCanSee;
 
-
     }
-
 
 }

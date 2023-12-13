@@ -40,7 +40,7 @@ public class SubscriptionTypeConverter {
         return SubscriptionType.builder()
                 .subscriptionTypeId(entity.getSubscriptionTypeId())
                 .type(entity.getType())
-                .price(entity.getPrice())
+                .price(0)
                 .description(entity.getDescription())
                 .creator(foundCreator)
                 .fan(foundFan)

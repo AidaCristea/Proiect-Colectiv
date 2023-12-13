@@ -16,14 +16,24 @@ import java.util.List;
 @Table(name="subscriptionType")
 public class SubscriptionType {
 
+
+    public enum Type {
+        ULTIMATE,
+        PRO,
+        LITE
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="subscription_type_id")
     private Long subscriptionTypeId;
 
-    private String type;
+    //private String type;
     private double price;
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
 
     /*@OneToMany(mappedBy = "subscriptionType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

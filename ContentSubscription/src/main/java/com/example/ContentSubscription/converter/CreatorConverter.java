@@ -16,7 +16,9 @@ public class CreatorConverter {
         return CreatorDto.builder()
                 .creatorId(entity.getCreatorId())
                 .bio(entity.getBio())
-                //.subscriptionTypes(entity.getSubscriptionTypes())
+                .priceUltimate(entity.getPriceUltimate())
+                .priceLite(entity.getPriceLite())
+                .pricePro(entity.getPricePro())
                 .build();
     }
 
@@ -25,7 +27,9 @@ public class CreatorConverter {
         return Creator.builder()
                 .creatorId(entity.getCreatorId())
                 .bio(entity.getBio())
-                //.subscriptionTypes(entity.getSubscriptionTypes())
+                .priceUltimate(entity.getPriceUltimate())
+                .priceLite(entity.getPriceLite())
+                .pricePro(entity.getPricePro())
                 .build();
     }
 

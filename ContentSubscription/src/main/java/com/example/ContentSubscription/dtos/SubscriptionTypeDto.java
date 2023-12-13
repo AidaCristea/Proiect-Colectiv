@@ -1,6 +1,7 @@
 package com.example.ContentSubscription.dtos;
 
 import com.example.ContentSubscription.domain.Post;
+import com.example.ContentSubscription.domain.SubscriptionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.List;
 @Builder
 public class SubscriptionTypeDto {
     private Long subscriptionTypeId;
-    private String type;
+    private SubscriptionType.Type type;
     private double price;
     private String description;
     private Long creatorId;

@@ -25,6 +25,9 @@ public class Creator {
     private Long creatorId;
 
     private String bio;
+    private Long priceUltimate;
+    private Long priceLite;
+    private Long pricePro;
 
     /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "fan_subscribed_creators",

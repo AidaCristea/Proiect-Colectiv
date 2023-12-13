@@ -14,4 +14,11 @@ public interface SubscriptionTypeRepo extends JpaRepository<SubscriptionType, Lo
     @Query("SELECT S.creator.creatorId FROM SubscriptionType S WHERE S.subscriptionTypeId = :subscriptionTypeId")
     List<Long> findCreatorBySubscriptionId(@Param("subscriptionTypeId") Long subscriptionTypeId);
 
+
+    @Query("SELECT CASE WHEN :type = 'LITE' THEN C.priceLite " +
+            "WHEN :type = 'PRO' THEN C.pricePro " +
+            "WHEN :type = 'ULTIMATE' THEN C.priceUltimate " +
+            "ELSE 0 END AS selected_price " +
+            "FROM Creator C WHERE C.creatorId = :creatorId")
+    Long price(@Param("creatorId") Long creatorId, @Param("type")String type);
 }

@@ -18,8 +18,17 @@ public class SubscriptionTypeService {
 
     // Create a new subscription type
     public SubscriptionType createSubscriptionType(SubscriptionType subscriptionType) {
-        System.out.println(subscriptionType);
+        //System.out.println(subscriptionType);
+
+        //complete the price field with the price given by the type and the creatorId
+        Long price = subscriptionTypeRepo.price(subscriptionType.getCreator().getCreatorId(), subscriptionType.getType().toString());
+        subscriptionType.setPrice(price);
+
+        System.out.println("afisare "+price);
+
+
         return subscriptionTypeRepo.save(subscriptionType);
+        //return null;
     }
 
     // Get all subscription types
