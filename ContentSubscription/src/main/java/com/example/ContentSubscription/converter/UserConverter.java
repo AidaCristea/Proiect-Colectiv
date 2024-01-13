@@ -17,6 +17,7 @@ public class UserConverter {
                 .userId(entity.getUserId())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
+                .userType(entity.getUserType().toString())
                 .photoURL(entity.getPhotoURL())
                 .build();
     }
@@ -27,7 +28,8 @@ public class UserConverter {
                 .userId(entity.getUserId())
                 .email(entity.getEmail())
                 .password(entity.getPassword())
-                .email(entity.getEmail())
+                .photoURL(entity.getPhotoURL())
+                .userType(User.UType.valueOf(entity.getUserType()))
                 .build();
     }
     public List<UserDTO> convertEntitiesToDtos(Collection<User> model)

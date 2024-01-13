@@ -40,9 +40,11 @@ public class UserController {
         User foundUser = userService.getUserById(userId);
         return ResponseEntity.status(HttpStatus.OK).body(userConverter.convertEntityToDto(foundUser));
     }
-    @GetMapping("/login/")
+    @GetMapping("/login")
     public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTOShort userDTOShort){
-        return null;
+
+        User foundUser = userService.loginUser(userDTOShort.getEmail(), userDTOShort.getPassword());
+        return ResponseEntity.status(HttpStatus.OK).body(userConverter.convertEntityToDto(foundUser));
     }
 
 
