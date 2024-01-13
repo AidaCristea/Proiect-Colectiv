@@ -27,6 +27,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UType userType;
 
+    private String photoURL;
+
     @Override
     public String toString() {
         return "User{" +
@@ -34,6 +36,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", userType=" + userType +
+                ", photoURL='" + photoURL + '\'' +
                 '}';
     }
 }
