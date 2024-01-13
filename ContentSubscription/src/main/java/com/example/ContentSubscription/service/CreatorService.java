@@ -84,6 +84,27 @@ public class CreatorService {
 
     }
 
+    public Long priceUltimate(Long creatorId)
+    {
+        Creator foundCreator = creatorRepo.findById(creatorId).orElseThrow(NoCreatorFoundException::new);
+        return foundCreator.getPriceUltimate();
+
+    }
+
+    public Long priceLite(Long creatorId)
+    {
+        Creator foundCreator = creatorRepo.findById(creatorId).orElseThrow(NoCreatorFoundException::new);
+        return foundCreator.getPriceLite();
+
+    }
+
+    public Long pricePro(Long creatorId)
+    {
+        Creator foundCreator = creatorRepo.findById(creatorId).orElseThrow(NoCreatorFoundException::new);
+        return foundCreator.getPricePro();
+
+    }
+
 
 
 }

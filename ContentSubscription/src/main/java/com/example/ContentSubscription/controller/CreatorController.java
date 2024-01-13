@@ -63,6 +63,30 @@ public class CreatorController {
     }
 
 
+    @GetMapping("/ultimatePrice/{creatorId}")
+    public ResponseEntity<Long> ultimatePrice(@PathVariable Long creatorId)
+    {
+        Long ultimatePrice = creatorService.priceUltimate(creatorId);
+        return ResponseEntity.status(HttpStatus.OK).body(ultimatePrice);
+
+    }
+
+    @GetMapping("/litePrice/{creatorId}")
+    public ResponseEntity<Long> litePrice(@PathVariable Long creatorId)
+    {
+        Long litePrice = creatorService.priceLite(creatorId);
+        return ResponseEntity.status(HttpStatus.OK).body(litePrice);
+
+    }
+
+    @GetMapping("/proPrice/{creatorId}")
+    public ResponseEntity<Long> proPrice(@PathVariable Long creatorId)
+    {
+        Long proPrice = creatorService.pricePro(creatorId);
+        return ResponseEntity.status(HttpStatus.OK).body(proPrice);
+
+    }
+
 
 
 }
