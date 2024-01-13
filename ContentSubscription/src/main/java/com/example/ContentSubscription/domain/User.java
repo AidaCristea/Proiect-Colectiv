@@ -11,12 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name="user")
+@Table(name="userNew")
 public class User {
-    public enum UType{
-        CREATOR,
-        FAN
-    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id")
@@ -28,6 +25,10 @@ public class User {
     private UType userType;
 
     private String photoURL;
+    public enum UType{
+        CREATOR,
+        FAN
+    }
 
     @Override
     public String toString() {
