@@ -28,6 +28,7 @@ public class Creator {
     private Long priceUltimate;
     private Long priceLite;
     private Long pricePro;
+    private String photoURL;
 
     /*@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "fan_subscribed_creators",

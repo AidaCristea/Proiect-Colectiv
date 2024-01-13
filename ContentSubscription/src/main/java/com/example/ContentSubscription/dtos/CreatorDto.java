@@ -21,6 +21,7 @@ public class CreatorDto {
     private Long priceUltimate;
     private Long priceLite;
     private Long pricePro;
+    private String photoURL;
 
     //private List<SubscriptionType> subscriptionTypes;
 }

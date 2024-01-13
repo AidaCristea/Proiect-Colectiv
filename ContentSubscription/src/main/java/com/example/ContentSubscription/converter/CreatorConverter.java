@@ -19,6 +19,7 @@ public class CreatorConverter {
                 .priceUltimate(entity.getPriceUltimate())
                 .priceLite(entity.getPriceLite())
                 .pricePro(entity.getPricePro())
+                .photoURL(entity.getPhotoURL())
                 .build();
     }
 
@@ -30,6 +31,7 @@ public class CreatorConverter {
                 .priceUltimate(entity.getPriceUltimate())
                 .priceLite(entity.getPriceLite())
                 .pricePro(entity.getPricePro())
+                .photoURL(entity.getPhotoURL())
                 .build();
     }
 
