@@ -27,7 +27,18 @@ public class UserService {
     }
 
     public User loginUser(String email, String password) {
-        return userRepo.findByEmailAndPassword(email,password);
+
+        try
+        {
+            User foundUser = userRepo.findByEmailAndPassword(email,password);
+            return foundUser;
+
+        }
+        catch (NullPointerException ex)
+        {
+            return null;
+        }
+
 
     }
 

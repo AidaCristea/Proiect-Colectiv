@@ -44,6 +44,12 @@ public class UserController {
     public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTOShort userDTOShort){
 
         User foundUser = userService.loginUser(userDTOShort.getEmail(), userDTOShort.getPassword());
+        if(foundUser==null)
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+
+
         return ResponseEntity.status(HttpStatus.OK).body(userConverter.convertEntityToDto(foundUser));
     }
 
