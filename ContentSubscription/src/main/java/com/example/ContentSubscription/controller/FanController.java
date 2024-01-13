@@ -74,4 +74,14 @@ public class FanController {
     }
 
 
+    @GetMapping("/creatorsNotSubscribedTo/{fanId}")
+    public ResponseEntity<List<CreatorDto>> seeNotSubscribedTo(@PathVariable Long fanId)
+    {
+        List<Creator> creators = fanService.seeCreatorsNotSubscribedTo(fanId);
+        return ResponseEntity.status(HttpStatus.OK).body(creatorConverter.convertEntitiesToDtos(creators));
+
+    }
+
+
+
 }

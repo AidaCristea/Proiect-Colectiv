@@ -65,6 +65,28 @@ public class FanService {
 
     }
 
+
+    public List<Creator> seeCreatorsNotSubscribedTo(Long fanId)
+    {
+        //fans not subscribed to
+        List<Creator> allCreatorsThatTheFanIsNotSubscribedTo = new ArrayList<>();
+        List<Creator> allCreators = creatorRepo.findAll();
+
+        //fans subscribed to
+        List<Creator> subscribedTo = seeCreators(fanId);
+
+        for(Creator cr: allCreators)
+        {
+            if(!subscribedTo.contains(cr))
+            {
+                allCreatorsThatTheFanIsNotSubscribedTo.add(cr);
+            }
+        }
+
+        return allCreatorsThatTheFanIsNotSubscribedTo;
+
+    }
+
     public List<Post> seePosts(Long fanId) {
         //select post where subscriptionType in (select subscription type where idFan = fanId)
 
