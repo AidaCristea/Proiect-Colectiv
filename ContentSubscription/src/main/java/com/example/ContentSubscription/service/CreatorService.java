@@ -2,11 +2,16 @@ package com.example.ContentSubscription.service;
 
 
 import com.example.ContentSubscription.Exceptions.NoCreatorFoundException;
+import com.example.ContentSubscription.Exceptions.NoPostFoundException;
 import com.example.ContentSubscription.domain.Creator;
+import com.example.ContentSubscription.domain.Post;
 import com.example.ContentSubscription.repository.CreatorRepo;
+import com.example.ContentSubscription.repository.PostRepo;
+import com.example.ContentSubscription.repository.SubscriptionTypeRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -14,6 +19,9 @@ import java.util.List;
 public class CreatorService {
 
     private final CreatorRepo creatorRepo;
+    private final SubscriptionTypeRepo subscriptionTypeRepo;
+    private final PostRepo postRepo;
+
 
     // Create a new creator
     public Creator createCreator(Creator creator) {
@@ -50,6 +58,30 @@ public class CreatorService {
         if(!creatorRepo.existsById(creatorId))
             throw new NoCreatorFoundException();
         creatorRepo.deleteById(creatorId);
+    }
+
+
+    public List<Post> creatorSeesHisPosts(Long creatorId) {
+        //select post where subscriptionType in (select subscription type where idFan = fanId)
+
+        List<Post> allPostsThatTheCreatorCanSee = new ArrayList<>();
+
+        System.out.println(subscriptionTypeRepo.findByCreatorId(creatorId));
+
+
+        List<Long> subscriptionTypeIdsForTheCreator = subscriptionTypeRepo.findByCreatorId(creatorId);
+
+
+        for (Long stId : subscriptionTypeIdsForTheCreator) {
+            List<Long> postsIds = postRepo.findBySubscriptionTypeId(stId);
+            for (Long postId : postsIds) {
+                allPostsThatTheCreatorCanSee.add(postRepo.findById(postId).orElseThrow(NoPostFoundException::new));
+            }
+
+            System.out.println(postRepo.findBySubscriptionTypeId(stId));
+        }
+        return allPostsThatTheCreatorCanSee;
+
     }
 
 
