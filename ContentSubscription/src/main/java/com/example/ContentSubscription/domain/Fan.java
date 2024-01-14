@@ -18,7 +18,6 @@ import java.util.List;
 public class Fan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="fan_id")
     private Long fanId;
 
