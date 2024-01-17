@@ -76,6 +76,7 @@ public class CreatorTests {
                 .photoURL("url")
                 .build();
 
+        creators.add(addedCreator);
 
         when(creatorService.createCreator(creatorToAdd)).thenReturn(addedCreator);
         when(creatorConverter.convertDtoToEntity(creatorDtoToAdd)).thenReturn(creatorToAdd);
