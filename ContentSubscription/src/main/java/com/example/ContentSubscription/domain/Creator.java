@@ -20,6 +20,7 @@ import java.util.List;
 public class Creator {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "creator_id")
     private Long creatorId;
 
