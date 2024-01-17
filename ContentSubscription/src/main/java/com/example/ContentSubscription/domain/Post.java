@@ -28,7 +28,7 @@ public class Post {
     @JoinColumn(name = "creator_id")
     private Creator creator;*/
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "subscription_type_id")
     private SubscriptionType subscriptionType;
 
