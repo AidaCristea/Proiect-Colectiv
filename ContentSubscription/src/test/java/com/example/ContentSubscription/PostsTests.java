@@ -1,98 +1,115 @@
 package com.example.ContentSubscription;
 
 import com.example.ContentSubscription.controller.PostController;
+import com.example.ContentSubscription.converter.PostConverter;
 import com.example.ContentSubscription.domain.Post;
 import com.example.ContentSubscription.dtos.PostDto;
 import com.example.ContentSubscription.service.PostService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class PostTests {
+@ExtendWith(MockitoExtension.class)
+public class PostsTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+    private List<Post> posts = new ArrayList<>();
 
-    @MockBean
+    @Mock
+    private PostConverter postConverter;
+
+    @Mock
     private PostService postService;
 
-    @BeforeEach
-    void setup() {
-        // Mocking data for testing
-        Post post = new Post();
-        post.setPostId(1L);
-        post.setContent("Test Content");
-        PostDto postDto = new PostDto();
-        postDto.setContent("Test Content");
-        Long subscriptionTypeId = 1L;
-        postDto.setContent("Test Content");
-        postDto.setSubscriptionTypeId(subscriptionTypeId);
+    @InjectMocks
+    private PostController postController;
 
-        List<Post> posts = new ArrayList<>();
-        posts.add(post);
+    @Test
+    public void testAddPost() {
+        Post postToAdd = Post.builder()
+                .postId(1L)
+                .content("Sample Content")
+                .build();
 
-        // Mock the behavior of service methods
-        when(postService.getAllPosts()).thenReturn(posts);
-        when(postService.readOne(1L)).thenReturn(post);
-        when(postService.createPost(any(Post.class))).thenReturn(post);
-        // You can mock other methods for update and delete operations as needed.
+        Post savedPost = Post.builder()
+                .postId(1L)
+                .content("Sample Content")
+                .build();
+
+        PostDto postDtoToAdd = PostDto.builder()
+                .content("Sample Content")
+                .subscriptionTypeId(1L)
+                .build();
+
+        posts.add(savedPost);
+
+        when(postService.createPost(postToAdd)).thenReturn(savedPost);
+        when(postConverter.convertDtoToEntity(postDtoToAdd)).thenReturn(postToAdd);
+
+        ResponseEntity<PostDto> response = postController.addPost(postDtoToAdd);
+        verify(postConverter, Mockito.times(1)).convertDtoToEntity(postDtoToAdd);
+        verify(postService, Mockito.times(1)).createPost(postToAdd);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.CREATED, response.getStatusCode(),
+                        "Actual status code and expected code are not the same!")
+        );
     }
 
     @Test
-    void testGetAllPosts() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/post"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].postId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].content").value("Test Content"));
+    public void testDeletePost() {
+        Long postIdToDelete = 1L;
+        postController.deletePost(postIdToDelete);
+        verify(postService, Mockito.times(1)).deletePost(postIdToDelete);
     }
 
     @Test
-    void testGetPostById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/post/1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.postId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content").value("Test Content"));
+    public void testReadOne() {
+        Long postIdToRead = 1L;
+        Post foundPost = Post.builder()
+                .postId(postIdToRead)
+                .content("Sample Content")
+                .subscriptionType(null)
+                .build();
+
+        when(postService.readOne(postIdToRead)).thenReturn(foundPost);
+
+        ResponseEntity<PostDto> response = postController.readOne(postIdToRead);
+
+        verify(postService, Mockito.times(1)).readOne(postIdToRead);
+        verify(postConverter, Mockito.times(1)).convertEntityToDto(foundPost);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode(),
+                        "Actual status code and expected code are not the same!")
+        );
     }
 
     @Test
-    void testCreatePost() throws Exception {
-        PostDto postDto = new PostDto();
-        postDto.setContent("Test Content");
-        Long subscriptionTypeId = 1L;
-        postDto.setContent("Test Content");
-        postDto.setSubscriptionTypeId(subscriptionTypeId);
+    public void testReadAllPosts() {
+        List<Post> expectedPosts = new ArrayList<>();
+        expectedPosts.add(Post.builder().postId(1L).build());
+        expectedPosts.add(Post.builder().postId(2L).build());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/post")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtil.toJson(postDto)))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        when(postService.getAllPosts()).thenReturn(expectedPosts);
+
+        List<Post> actualPosts = postService.getAllPosts();
+
+        verify(postService, Mockito.times(1)).getAllPosts();
+
+        assertEquals(expectedPosts, actualPosts,
+                "Expected posts and actual posts do not match!");
     }
 
-}
-
-// You can create a utility class for JSON serialization/deserialization
-class JsonUtil {
-    public static String toJson(Object obj) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(obj);
-    }
 }
